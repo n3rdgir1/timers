@@ -9,7 +9,7 @@ export const SKIP_BREAK = 'Skip Break';
 export const pomodoroMachine = Machine(
   {
     id: 'pomodoroMachine',
-    initial: 'pomodoro',
+    initial: POMODORO,
     context: {
       breakCount: 0,
       buttons: {
@@ -18,38 +18,38 @@ export const pomodoroMachine = Machine(
       },
     },
     states: {
-      pomodoro: {
+      [POMODORO]: {
         on: {
           [NEXT]: [
             {
-              target: 'long',
+              target: LONG,
               cond: 'isLongBreak',
             },
             {
-              target: 'short',
+              target: SHORT,
               actions: 'incrementBreak',
             },
           ],
           [SKIP_BREAK]: {
-            target: 'pomodoro',
+            target: POMODORO,
             actions: 'incrementBreak',
           },
           [LONG]: {
-            target: 'long',
+            target: LONG,
             actions: 'incrementBreak',
           },
         },
         entry: 'setPomodoroButtons',
         exit: 'setBreakButtons',
       },
-      short: {
+      [SHORT]: {
         on: {
-          [NEXT]: 'pomodoro',
+          [NEXT]: POMODORO,
         },
       },
-      long: {
+      [LONG]: {
         on: {
-          [NEXT]: 'pomodoro',
+          [NEXT]: POMODORO,
         },
       },
     },
