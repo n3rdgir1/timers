@@ -30,6 +30,8 @@ describe('Pomodoro Machine', () => {
     expect(longBreak.value).toEqual(LONG);
     const backToBeginning = pomodoroMachine.transition(longBreak, NEXT);
     expect(backToBeginning.value).toEqual(POMODORO);
+    const nextShortBreak = pomodoroMachine.transition(backToBeginning, NEXT);
+    expect(nextShortBreak.value).toEqual(SHORT);
   });
 
   it('ensures break cycle even if short breaks are skipped', () => {

@@ -51,6 +51,7 @@ export const pomodoroMachine = Machine(
         on: {
           [NEXT]: POMODORO,
         },
+        exit: 'resetBreak',
       },
     },
   },
@@ -66,8 +67,10 @@ export const pomodoroMachine = Machine(
           };
         }
         return {
-          primary: SHORT,
-          secondary: [LONG, SKIP_BREAK],
+          buttons: {
+            primary: SHORT,
+            secondary: [LONG, SKIP_BREAK],
+          },
         };
       }),
       setBreakButtons: assign(() => ({
@@ -77,6 +80,9 @@ export const pomodoroMachine = Machine(
       })),
       incrementBreak: assign((context) => ({
         breakCount: context.breakCount + 1,
+      })),
+      resetBreak: assign(() => ({
+        breakCount: 0,
       })),
     },
     guards: {
