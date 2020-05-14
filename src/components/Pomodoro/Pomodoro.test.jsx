@@ -9,13 +9,18 @@ describe('Pomodoro', () => {
   describe('when in pomodoro', () => {
     let getByTestId;
     let getAllByTestId;
+    let getAllByRole;
 
     beforeEach(() => {
-      ({ getByTestId, getAllByTestId } = render(component()));
+      ({ getByTestId, getAllByTestId, getAllByRole } = render(component()));
     });
 
     it('renders the pomodoro', () => {
       expect(getByTestId(POMODORO)).toBeInTheDocument();
+    });
+
+    it('shows all 3 buttons', () => {
+      expect(getAllByRole('button').length).toEqual(3);
     });
 
     it('shows primary button with correct text', () => {
@@ -48,10 +53,62 @@ describe('Pomodoro', () => {
   });
 
   describe('when in short break', () => {
+    let getByTestId;
+    let getAllByRole;
 
+    beforeEach(() => {
+      ({ getByTestId, getAllByRole } = render(component()));
+      getByTestId('primary').click();
+    });
+
+    it('renders the short break', () => {
+      expect(getByTestId(SHORT)).toBeInTheDocument();
+    });
+
+    it('shows the button', () => {
+      expect(getAllByRole('button').length).toEqual(1);
+    });
+
+    it('shows primary button with correct text', () => {
+      expect(getByTestId('primary')).toHaveTextContent('Start Pomodoro');
+    });
+
+    it('switches to pomodoro when the primary button is clicked', async () => {
+      getByTestId('primary').click();
+
+      await wait(() => expect(getByTestId(POMODORO)).toBeInTheDocument());
+    });
   });
 
   describe('when in long break', () => {
+    let getByTestId;
+    let getAllByRole;
 
+    beforeEach(() => {
+      ({ getByTestId, getAllByRole } = render(component()));
+      getByTestId('primary').click();
+      getByTestId('primary').click();
+      getByTestId('primary').click();
+      getByTestId('primary').click();
+      getByTestId('primary').click();
+    });
+
+    it('renders the long break', () => {
+      expect(getByTestId(LONG)).toBeInTheDocument();
+    });
+
+    it('shows the button', () => {
+      expect(getAllByRole('button').length).toEqual(1);
+    });
+
+    it('shows primary button with correct text', () => {
+      expect(getByTestId('primary')).toHaveTextContent('Start Pomodoro');
+    });
+
+    it('switches to pomodoro when the primary button is clicked', async () => {
+      getByTestId('primary').click();
+
+      await wait(() => expect(getByTestId(POMODORO)).toBeInTheDocument());
+    });
   });
 });
