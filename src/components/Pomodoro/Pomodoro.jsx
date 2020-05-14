@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMachine, useService } from '@xstate/react';
+import Sound from 'react-sound';
 import { pomodoroMachine, NEXT } from '../../machines/pomodoro';
 import Tomato from './Tomato/Tomato';
 import './Pomodoro.scss';
@@ -45,6 +46,11 @@ export default () => {
           ))}
         </div>
         )}
+        <Sound
+          url="alarm.wav"
+          playStatus={Sound.status.PLAYING}
+          playFromPosition={0}
+        />
       </>
       )}
     </div>
