@@ -1,4 +1,5 @@
-import { Machine, assign } from 'xstate';
+import { Machine, assign, spawn } from 'xstate';
+import { createTimerMachine } from './timer';
 
 export const NEXT = 'Next Step';
 export const SHORT = 'Short Break';
@@ -39,18 +40,20 @@ export const pomodoroMachine = Machine(
             actions: 'incrementBreak',
           },
         },
-        entry: 'setPomodoroButtons',
+        entry: ['setPomodoroButtons', 'startPomodoroTimer'],
         exit: 'setBreakButtons',
       },
       [SHORT]: {
         on: {
           [NEXT]: POMODORO,
         },
+        entry: 'startShortBreakTimer',
       },
       [LONG]: {
         on: {
           [NEXT]: POMODORO,
         },
+        entry: 'startLongBreakTimer',
         exit: 'resetBreak',
       },
     },
@@ -73,6 +76,9 @@ export const pomodoroMachine = Machine(
           },
         };
       }),
+      startPomodoroTimer: assign(() => ({
+        timer: spawn(createTimerMachine(25 * 60)),
+      })),
       setBreakButtons: assign(() => ({
         buttons: {
           primary: POMODORO,
@@ -83,6 +89,12 @@ export const pomodoroMachine = Machine(
       })),
       resetBreak: assign(() => ({
         breakCount: 0,
+      })),
+      startLongBreakTimer: assign(() => ({
+        timer: spawn(createTimerMachine(15 * 60)),
+      })),
+      startShortBreakTimer: assign(() => ({
+        timer: spawn(createTimerMachine(5 * 60)),
       })),
     },
     guards: {

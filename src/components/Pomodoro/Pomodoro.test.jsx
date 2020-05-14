@@ -3,8 +3,18 @@ import { render, wait } from '@testing-library/react';
 import Pomodoro from './Pomodoro';
 import { POMODORO, SHORT, LONG } from '../../machines/pomodoro';
 
+jest.useFakeTimers();
+
 describe('Pomodoro', () => {
   const component = () => <Pomodoro />;
+
+  describe('when timer is running', () => {
+    it('shows all no buttons', () => {
+      const { queryAllByRole } = render(component());
+
+      expect(queryAllByRole('button').length).toEqual(0);
+    });
+  });
 
   describe('when in pomodoro', () => {
     let getByTestId;
@@ -13,6 +23,8 @@ describe('Pomodoro', () => {
 
     beforeEach(() => {
       ({ getByTestId, getAllByTestId, getAllByRole } = render(component()));
+
+      jest.advanceTimersByTime(25000 * 60);
     });
 
     it('renders the pomodoro', () => {
@@ -58,7 +70,9 @@ describe('Pomodoro', () => {
 
     beforeEach(() => {
       ({ getByTestId, getAllByRole } = render(component()));
+      jest.advanceTimersByTime(25000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(5000 * 60);
     });
 
     it('renders the short break', () => {
@@ -86,11 +100,17 @@ describe('Pomodoro', () => {
 
     beforeEach(() => {
       ({ getByTestId, getAllByRole } = render(component()));
+      jest.advanceTimersByTime(25000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(5000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(25000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(5000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(25000 * 60);
       getByTestId('primary').click();
+      jest.advanceTimersByTime(15000 * 60);
     });
 
     it('renders the long break', () => {
