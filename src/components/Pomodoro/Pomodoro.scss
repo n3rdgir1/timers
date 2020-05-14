@@ -1,0 +1,36 @@
+.pomodoro {
+  button {
+    padding: 10px;
+    background-color: white;
+    -webkit-appearance: none;
+    width: 100px;
+    text-align: center;
+
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+
+    &.primary {
+      font-size: 20px;
+      width: 215px;
+    }
+  }
+
+  .secondary {
+    margin-top: 15px;
+  }
+
+  &.pomodoro {
+    button.primary {
+      background-color: green;
+      color: white;
+    }
+  }
+
+  &.break {
+    button.primary {
+      background-color: red;
+      color: white;
+    }
+  }
+}

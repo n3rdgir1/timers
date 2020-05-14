@@ -1,0 +1,47 @@
+.tomato {
+  height: 200px;
+  width: 200px;
+  position: relative;
+  margin-bottom: 15px;
+
+  .body {
+    height: 100%;
+    width: 100%;
+    clip-path: ellipse(50% 42% at 50% 50%);
+    background: radial-gradient(ellipse at 80% 20%, white, red 50%);
+    transform: translateY(8%);
+  }
+
+  .stem {
+    height: 20%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at 80% 20%, white, green 50%);
+    clip-path: polygon(35% 100%, 0% 60%, 30% 55%, 8% 10%, 41% 38%, 67% 3%, 60% 55%, 100% 38%, 61% 100%);
+  }
+
+  figcaption {
+    font-size: 40px;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+
+  &.break {
+    .body {
+      background: radial-gradient(ellipse at 80% 20%, white, green 50%);
+    }
+  }
+}
+
+figure {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
