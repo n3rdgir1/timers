@@ -8,6 +8,7 @@ h1 {
   button {
     padding: 10px;
     font-size: 16px;
+    border: 1px solid black;
 
     &:not(last-child) {
       margin-right: 15px;
@@ -15,6 +16,12 @@ h1 {
   }
 }
 
+header {
+  margin: 15px auto;
+  max-width: 300px;
+}
+
 main {
-  margin: 15px;
+  margin: 15px auto;
+  max-width: 270px;
 }
