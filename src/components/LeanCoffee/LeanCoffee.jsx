@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useMachine, useService } from '@xstate/react';
-import Sound from 'react-sound';
 import { leanCoffeeMachine, NEXT } from '../../machines/leanCoffee';
 import Coffee from './Coffee/Coffee';
 import './LeanCoffee.scss';
+import Alarm from '../Alarm/Alarm';
 
 export default () => {
   const [state, send] = useMachine(leanCoffeeMachine);
@@ -44,11 +44,7 @@ export default () => {
           ))}
         </div>
         )}
-        <Sound
-          url="alarm.wav"
-          playStatus={Sound.status.PLAYING}
-          playFromPosition={0}
-        />
+        <Alarm />
       </>
       )}
     </div>

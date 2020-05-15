@@ -4,6 +4,7 @@ import Pomodoro from './Pomodoro';
 import { POMODORO, SHORT, LONG } from '../../machines/pomodoro';
 
 jest.useFakeTimers();
+jest.mock('../Alarm/Alarm');
 
 describe('Pomodoro', () => {
   const component = () => <Pomodoro />;
@@ -33,6 +34,10 @@ describe('Pomodoro', () => {
 
     it('shows all 3 buttons', () => {
       expect(getAllByRole('button').length).toEqual(3);
+    });
+
+    it('shows the alarm', () => {
+      expect(getByTestId('alarm')).toBeInTheDocument();
     });
 
     it('shows primary button with correct text', () => {
