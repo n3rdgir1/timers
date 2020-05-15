@@ -10,9 +10,6 @@ export const leanCoffeeMachine = Machine(
   {
     id: 'leanCoffeeMachine',
     initial: DISCUSS,
-    context: {
-      breakCount: 0,
-    },
     states: {
       [DISCUSS]: {
         on: {

@@ -55,16 +55,4 @@ export const createTimerMachine = (duration) => Machine({
       },
     },
   },
-  on: {
-    'DURATION.UPDATE': {
-      actions: assign({
-        duration: (_, event) => event.value,
-      }),
-    },
-    RESET: {
-      actions: assign({
-        remaining: duration,
-      }),
-    },
-  },
 });

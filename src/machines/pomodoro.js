@@ -13,10 +13,6 @@ export const pomodoroMachine = Machine(
     initial: POMODORO,
     context: {
       breakCount: 0,
-      buttons: {
-        primary: SHORT,
-        secondary: [LONG, SKIP_BREAK],
-      },
     },
     states: {
       [POMODORO]: {
