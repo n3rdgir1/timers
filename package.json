@@ -2,6 +2,7 @@
   "name": "xstate-timers",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://n3rdgir1.github.io/xstate-timers",
   "dependencies": {
     "@xstate/react": "^0.8.1",
     "node-sass": "^4.14.1",
@@ -15,7 +16,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +44,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.1",
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "gh-pages": "^2.2.0"
   }
 }
