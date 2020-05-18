@@ -2,7 +2,7 @@
   "name": "xstate-timers",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://n3rdgir1.github.io/xstate-timers",
+  "homepage": "http://n3rdgir1.github.io/timers",
   "dependencies": {
     "@xstate/react": "^0.8.1",
     "node-sass": "^4.14.1",
