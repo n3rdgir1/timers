@@ -30,7 +30,7 @@ export default () => {
           {buttons.primary}
         </button>
         {buttons.secondary && (
-        <div className="secondary">
+        <div className={`secondary ${buttons.secondary.length === 1 ? 'full-width' : ''}`}>
           {buttons.secondary.map((button) => (
             <button
               type="button"

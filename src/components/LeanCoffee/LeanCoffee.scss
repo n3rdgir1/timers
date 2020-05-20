@@ -20,5 +20,11 @@
 
   .secondary {
     margin-top: 15px;
+
+    &.full-width {
+      button {
+        width: 215px;
+      }
+    }
   }
 }
