@@ -65,20 +65,13 @@ export const pomodoroMachine = Machine(
   {
     actions: {
       setPomodoroContext: assign(({ breakCount }) => {
-        if (breakCount >= 2) {
-          return {
-            duration: 25,
-            buttons: {
-              primary: LONG,
-              secondary: [SHORT, SKIP_BREAK],
-            },
-          };
-        }
+        const [primary, secondary] = breakCount >= 2 ? [LONG, SHORT] : [SHORT, LONG];
+
         return {
           duration: 25,
           buttons: {
-            primary: SHORT,
-            secondary: [LONG, SKIP_BREAK],
+            primary,
+            secondary: [secondary, SKIP_BREAK],
           },
         };
       }),

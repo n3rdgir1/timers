@@ -35,7 +35,7 @@ describe('Pomodoro', () => {
     beforeEach(() => {
       ({ getByTestId, getAllByTestId, getAllByRole } = render(component()));
 
-      act(() => jest.advanceTimersByTime(2));
+      act(() => jest.advanceTimersByTime(1));
     });
 
     it('renders the pomodoro', () => {
