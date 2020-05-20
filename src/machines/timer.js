@@ -1,4 +1,4 @@
-import { Machine, assign } from 'xstate';
+import { Machine, assign, sendParent } from 'xstate';
 
 const parseTime = (time) => {
   let seconds = time % 60;
@@ -9,24 +9,20 @@ const parseTime = (time) => {
   return `${minutes}:${seconds}`;
 };
 
-const calculateReamining = (context) => +(context.remaining - context.interval).toFixed(2);
-
 // eslint-disable-next-line import/prefer-default-export
 export const createTimerMachine = (duration) => Machine({
   initial: 'running',
   context: {
-    remaining: duration,
-    duration,
-    display: parseTime(duration),
-    interval: 1,
+    remaining: duration * 60,
   },
   states: {
     running: {
+      onEntry: 'updateParentTimers',
       invoke: {
-        src: (context) => (cb) => {
+        src: () => (cb) => {
           const interval = setInterval(() => {
             cb('TICK');
-          }, 1000 * context.interval);
+          }, 1000);
 
           return () => {
             clearInterval(interval);
@@ -36,23 +32,31 @@ export const createTimerMachine = (duration) => Machine({
       on: {
         '': {
           target: 'paused',
-          cond: (context) => context.remaining === 0,
+          cond: ({ remaining }) => remaining === 0,
         },
         TICK: {
-          actions: assign({
-            remaining: (context) => calculateReamining(context),
-            display: (context) => parseTime(calculateReamining(context)),
-          }),
+          actions: [
+            assign({
+              remaining: ({ remaining }) => remaining - 1,
+            }),
+            'updateParentTimers',
+          ],
         },
       },
     },
     paused: {
-      on: {
-        '': {
-          target: 'running',
-          cond: (context) => context.remaining > 0,
-        },
-      },
+      type: 'final',
     },
+  },
+},
+{
+  actions: {
+    updateParentTimers: sendParent(({ remaining }) => ({
+      type: 'TICK',
+      timer: {
+        running: remaining !== 0,
+        display: parseTime(remaining),
+      },
+    })),
   },
 });

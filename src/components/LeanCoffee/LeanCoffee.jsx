@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useMachine, useService } from '@xstate/react';
+import { useMachine } from '@xstate/react';
 import { leanCoffeeMachine, NEXT } from '../../machines/leanCoffee';
 import Coffee from './Coffee/Coffee';
 import './LeanCoffee.scss';
@@ -9,8 +9,7 @@ export default () => {
   const [state, send] = useMachine(leanCoffeeMachine);
   const { context, value } = state;
   const { buttons, timer } = context;
-  const [time] = useService(timer);
-  const { display, remaining } = time.context;
+  const { display, running } = timer;
 
   useEffect(() => {
     document.title = display;
@@ -20,7 +19,7 @@ export default () => {
     <div data-testid={value} className={`leanCoffee ${value.toLowerCase()}`}>
       <h2>{value}</h2>
       <Coffee value={value} time={display} />
-      {!remaining && (
+      {!running && (
       <>
         <button
           type="button"

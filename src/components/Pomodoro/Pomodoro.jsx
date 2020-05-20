@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useMachine, useService } from '@xstate/react';
+import { useMachine } from '@xstate/react';
 import { pomodoroMachine, NEXT } from '../../machines/pomodoro';
 import Tomato from './Tomato/Tomato';
 import './Pomodoro.scss';
@@ -9,8 +9,7 @@ export default () => {
   const [state, send] = useMachine(pomodoroMachine);
   const { context, value } = state;
   const { buttons, timer } = context;
-  const [time] = useService(timer);
-  const { display, remaining } = time.context;
+  const { display, running } = timer;
 
   useEffect(() => {
     document.title = display;
@@ -20,7 +19,7 @@ export default () => {
     <div data-testid={value} className={`pomodoro ${value.toLowerCase()}`}>
       <h2>{value}</h2>
       <Tomato value={value} time={display} />
-      {!remaining && (
+      {!running && (
       <>
         <button
           type="button"

@@ -1,4 +1,4 @@
-import { Machine, assign, spawn } from 'xstate';
+import { Machine, assign } from 'xstate';
 import { createTimerMachine } from './timer';
 
 export const NEXT = 'Next Step';
@@ -13,6 +13,9 @@ export const pomodoroMachine = Machine(
     initial: POMODORO,
     context: {
       breakCount: 0,
+      timer: {
+        running: true,
+      },
     },
     states: {
       [POMODORO]: {
@@ -35,30 +38,36 @@ export const pomodoroMachine = Machine(
             target: LONG,
             actions: 'incrementBreak',
           },
+          TICK: { actions: 'tick' },
         },
-        entry: ['setPomodoroButtons', 'startPomodoroTimer'],
-        exit: 'setBreakButtons',
+        invoke: { id: 'runTimer', src: 'createTimer' },
+        entry: ['setRunning', 'setPomodoroContext'],
       },
       [SHORT]: {
         on: {
           [NEXT]: POMODORO,
+          TICK: { actions: 'tick' },
         },
-        entry: 'startShortBreakTimer',
+        invoke: { id: 'runTimer', src: 'createTimer' },
+        entry: ['setRunning', 'setShortBreakContext'],
       },
       [LONG]: {
         on: {
           [NEXT]: POMODORO,
+          TICK: { actions: 'tick' },
         },
-        entry: 'startLongBreakTimer',
+        invoke: { id: 'runTimer', src: 'createTimer' },
+        entry: ['setRunning', 'setLongBreakContext'],
         exit: 'resetBreak',
       },
     },
   },
   {
     actions: {
-      setPomodoroButtons: assign(({ breakCount }) => {
+      setPomodoroContext: assign(({ breakCount }) => {
         if (breakCount >= 2) {
           return {
+            duration: 25,
             buttons: {
               primary: LONG,
               secondary: [SHORT, SKIP_BREAK],
@@ -66,16 +75,21 @@ export const pomodoroMachine = Machine(
           };
         }
         return {
+          duration: 25,
           buttons: {
             primary: SHORT,
             secondary: [LONG, SKIP_BREAK],
           },
         };
       }),
-      startPomodoroTimer: assign(() => ({
-        timer: spawn(createTimerMachine(25 * 60)),
+      setShortBreakContext: assign(() => ({
+        duration: 5,
+        buttons: {
+          primary: POMODORO,
+        },
       })),
-      setBreakButtons: assign(() => ({
+      setLongBreakContext: assign(() => ({
+        duration: 15,
         buttons: {
           primary: POMODORO,
         },
@@ -86,15 +100,15 @@ export const pomodoroMachine = Machine(
       resetBreak: assign(() => ({
         breakCount: 0,
       })),
-      startLongBreakTimer: assign(() => ({
-        timer: spawn(createTimerMachine(15 * 60)),
-      })),
-      startShortBreakTimer: assign(() => ({
-        timer: spawn(createTimerMachine(5 * 60)),
-      })),
+      tick: assign({
+        timer: (_, event) => event.timer,
+      }),
     },
     guards: {
       isLongBreak: ({ breakCount }) => breakCount >= 2,
+    },
+    services: {
+      createTimer: (context) => createTimerMachine(context.duration),
     },
   },
 );
