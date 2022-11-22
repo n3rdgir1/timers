@@ -5,7 +5,7 @@
   "homepage": "http://n3rdgir1.github.io/timers",
   "dependencies": {
     "@xstate/react": "^0.8.1",
-    "node-sass": "^7.0.0",
+    "node-sass": "^7.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "5.0.1",
